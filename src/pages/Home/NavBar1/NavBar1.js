@@ -16,8 +16,10 @@ const NavBar1 = () => {
                     <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                     <Navbar.Collapse id="responsive-navbar-nav">
                         <Nav className="me-auto">
-                            <Nav.Link href="#features">Men</Nav.Link>
-                            <Nav.Link href="#pricing">Women</Nav.Link>
+                            <Nav.Link href="/men">Men</Nav.Link>
+                            <Nav.Link href="/women">Women</Nav.Link>
+                            <Nav.Link href="/login">login</Nav.Link>
+                            <Nav.Link href="/register">register</Nav.Link>
                         </Nav>
                         <Nav>
                             <Nav.Link href="#deets" style={{lineHeight: '18px', marginLeft: '12px'}}>
