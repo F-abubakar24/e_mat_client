@@ -1,26 +1,26 @@
 import { useState, useEffect } from "react";
-import initializeAuthentication from "../Pages/Login/Firebase/Firebase.init";
+import initializeAuthentication from "../pages/Login/Firebase/Firebase.init";
 import {
     getAuth,
-    // createUserWithEmailAndPassword,
-    // signInWithEmailAndPassword,
-    // signOut,
-    // onAuthStateChanged,
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    signOut,
+    onAuthStateChanged,
     GoogleAuthProvider,
     signInWithPopup,
-    // updateProfile,
-    // getIdToken,
+    updateProfile,
+    getIdToken,
 } from "firebase/auth";
 
 // initialize firebase app
 initializeAuthentication();
 
 const useFirebase = () => {
-    // const [user, setUser] = useState({});
+    const [user, setUser] = useState({});
     const [loading, setLoading] = useState(true);
     const [authError, setAuthError] = useState("");
-    // const [admin, setAdmin] = useState(false);
-    // const [token, setToken] = useState("");
+    const [admin, setAdmin] = useState(false);
+    const [token, setToken] = useState("");
 
     const auth = getAuth();
     const googleProvider = new GoogleAuthProvider();
@@ -31,8 +31,8 @@ const useFirebase = () => {
         signInWithPopup(auth, googleProvider)
             .then((result) => {
                 setAuthError("");
-                // const user = result.user;
-                // saveUser("PUT", user.email, user.displayName, null);
+                const user = result.user;
+                saveUser("PUT", user.email, user.displayName, null);
                 const destination = location?.state?.from || "/";
                 history.replace(destination);
             })
@@ -43,7 +43,7 @@ const useFirebase = () => {
     };
 
     // Register user using email password;
-    /* const createUser = (name, email, password, history) => {
+    const createUser = (name, email, password, history) => {
         setLoading(true);
         createUserWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
@@ -51,7 +51,7 @@ const useFirebase = () => {
                 const newUser = { email, displayName: name };
                 setUser(newUser);
                 // save user to the database
-                // saveUser("POST", email, name, password);
+                saveUser("POST", email, name, password);
                 // send name to firebase after creation
                 updateProfile(auth.currentUser, {
                     displayName: name,
@@ -95,17 +95,17 @@ const useFirebase = () => {
     };
 
     // save user data on data base
-    // const saveUser = (method, email, displayName, password) => {
-    //     setLoading(true)
-    //     const user = { email, displayName, password };
-    //     fetch("https://bd-motors.herokuapp.com/users", {
-    //         method: method,
-    //         headers: {
-    //             "content-type": "application/json",
-    //         },
-    //         body: JSON.stringify(user),
-    //     }).then().finally(() => setLoading(false));
-    // };
+    const saveUser = (method, email, displayName, password) => {
+        setLoading(true)
+        const user = { email, displayName, password };
+        fetch("https://bd-motors.herokuapp.com/users", {
+            method: method,
+            headers: {
+                "content-type": "application/json",
+            },
+            body: JSON.stringify(user),
+        }).then().finally(() => setLoading(false));
+    };
 
     // The recommended way to get the current user is by setting an observer on the Auth object:
     useEffect(() => {
@@ -124,22 +124,22 @@ const useFirebase = () => {
     }, [auth]);
 
     // load real ADMIN data
-    // useEffect(() => {
-    //     fetch(`https://bd-motors.herokuapp.com/users/${user.email}`)
-    //         .then((res) => res.json())
-    //         .then((data) => setAdmin(data.Admin));
+    useEffect(() => {
+        fetch(`https://bd-motors.herokuapp.com/users/${user.email}`)
+            .then((res) => res.json())
+            .then((data) => setAdmin(data.Admin));
         
-    // }, [user.email]); */
+    }, [user.email]);
 
     return {
-        // user,
-        // token,
-        // admin,
+        user,
+        token,
+        admin,
         loading,
         authError,
-        // createUser,
-        // logOut,
-        // loginUser,
+        createUser,
+        logOut,
+        loginUser,
         googleSignIn,
     };
 };
